@@ -13,13 +13,13 @@ import com.test.deloitte.model.Todo;
 import lombok.Data;
 
 @Data
-public class TodoRequest {
+public class MultiTodoRequest {
   
   @Valid
   @NotNull(message = "List of Todos can't be null")
   @NotEmpty(message = "Please specify at least 1 todo")
   @JsonProperty("todos")
-  private Todo todo;
+  private List<Todo> todos;
   
   @NotBlank(message = "Username is mandatory")
   @JsonProperty("userName")

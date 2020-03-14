@@ -28,7 +28,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.test.deloitte.api.model.TodoRequest;
+import com.test.deloitte.api.model.MultiTodoRequest;
 import com.test.deloitte.dao.TodoRepository;
 import com.test.deloitte.dao.UserRepository;
 import com.test.deloitte.enums.Status;
@@ -46,7 +46,7 @@ class TodoServiceTest {
   @Mock
   private UserRepository userRepositoryMock;
 
-  private TodoRequest request;
+  private MultiTodoRequest request;
   private List<Todo> todos;
   private Todo todo;
   private Todo todo1;
@@ -69,7 +69,7 @@ class TodoServiceTest {
     todos = new ArrayList<>();
     todos.add(todo);
 
-    request = new TodoRequest();
+    request = new MultiTodoRequest();
     request.setTodos(todos);
     request.setUserName(TestData.USERNAME);
 

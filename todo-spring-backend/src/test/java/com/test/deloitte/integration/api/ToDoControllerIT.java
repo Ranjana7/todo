@@ -28,7 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.deloitte.TodoServiceApplication;
-import com.test.deloitte.api.model.TodoRequest;
+import com.test.deloitte.api.model.MultiTodoRequest;
 import com.test.deloitte.enums.Status;
 import com.test.deloitte.model.Todo;
 import com.test.deloitte.model.User;
@@ -48,7 +48,7 @@ class ToDoControllerIT {
   @Autowired
   private TodoService service;
   
-  private TodoRequest todoRequest;
+  private MultiTodoRequest todoRequest;
   private Todo todo;
   private List<Todo> todos;
   private User user;
@@ -64,7 +64,7 @@ class ToDoControllerIT {
     todo = new Todo(TestData.TITLE, Status.CREATED.getStatus(), TestData.CURRENT_DATE);
     todos = new ArrayList<>();
     todos.add(todo);
-    todoRequest = new TodoRequest();
+    todoRequest = new MultiTodoRequest();
     todoRequest.setTodos(todos);
     todoRequest.setUserName(TestData.USERNAME);
   }
