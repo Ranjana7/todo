@@ -14,7 +14,6 @@ export class TodoListComponent implements OnInit {
   userName: string = "TestUser1";
   todos: Todo[];
   newTodo: Todo = new Todo();
-  newRequest: TodoRequest = new TodoRequest();
   editing: boolean = false;
   editingTodo: Todo = new Todo();
 
@@ -31,12 +30,22 @@ export class TodoListComponent implements OnInit {
         if (todos) {
           this.todos = todos;
         } else {
-          console.log(`Todos for user '${this.userName}' not found, returning to list`);
+          console.log(`Todos for user '${this.userName}' not found`);
         }
       });
   }
 
   createTodo(todoForm: NgForm): void {
+    this.request = new TodoRequest();
+    this.request.todos.push(this.newTodo);
+    this.request.userName = this.userName;
+    this.todoService.createTodos(this.request).subscribe((todos: any) => {
+      if (todos) {
+        this.todos.push(todos);
+      } else {
+        console.log(`Error occured while creating Todos for user '${this.request.userName}'`);
+      }
+    });
   }
 
   deleteTodo(id: string): void {

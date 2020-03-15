@@ -1,7 +1,18 @@
 <div class="todo-content">
     <h1 class="page-title">{{userName}}'s Todos</h1>
     <div class="todo-create">
+      
       <form #todoForm="ngForm" (ngSubmit)="createTodo(todoForm)" novalidate>
+        <input type="text" id="name" class="form-control" placeholder="Type a username" 
+               required
+               name="name" [(ngModel)]="userName"
+               #name="ngModel" >
+        <div *ngIf="name.errors && name.dirty"
+             class="alert alert-danger">
+            <div [hidden]="!name.errors.required">
+              Username is required.
+            </div>
+        </div>
         <input type="text" id="title" class="form-control" placeholder="Type a todo and press enter..." 
                required
                name="title" [(ngModel)]="newTodo.title"
@@ -27,7 +38,7 @@
                 <a (click)="editTodo(todo)">
                   <i class="material-icons edit">edit</i>
                 </a>
-                <a (click)="deleteTodo(todo.id)">
+                <a (click)="deleteTodo(todo)">
                   <i class="material-icons delete">clear</i>
                 </a>
             </span>

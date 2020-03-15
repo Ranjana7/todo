@@ -24,9 +24,4 @@ export class TodoService {
   deleteTodos(todoData: TodoRequest): Observable<any> {
     return this.http.delete(this.baseUrl);
   }
-
-  private handleError(error: any): Promise<any> {
-    console.error('Some error occured', error);
-    return Promise.reject(error.message || error);
-  }
 }

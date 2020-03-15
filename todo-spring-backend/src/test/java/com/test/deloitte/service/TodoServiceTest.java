@@ -118,10 +118,11 @@ class TodoServiceTest {
   @Test
   void updateTodos_todoFoundForUser_updated() {
     setUpTodo();
-    
+	when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
+
     List<Todo> updateTodos = service.updateTodos(request);
     
-    verify(todoRepositoryMock).saveAll(todos);
+    verify(todoRepositoryMock).save(todo);
     for(Todo todo : updateTodos) {
       assertEquals(todo.getStatus(), Status.UPDATED.getStatus());
     }
@@ -130,8 +131,7 @@ class TodoServiceTest {
   @Test
   void updateTodos_todoNotFoundForUser_created() {
     setUpTodo();
-    request.getTodos().remove(todo);
-    request.getTodos().add(todo1);
+    when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo1));
     List<Todo> updateTodos = service.updateTodos(request);
     
     for(Todo todo : updateTodos) {
@@ -142,13 +142,13 @@ class TodoServiceTest {
   @Test
   void deleteTodos_todoFoundForUser_deleted() {
     setUpTodo();
-    when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
+	when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
     doAnswer((todo) -> {
       return null;
-    }).when(todoRepositoryMock).deleteById(anyLong());
+    }).when(todoRepositoryMock).delete(any());
     
     assertNotNull(service.deleteTodos(request));
-    verify(todoRepositoryMock).deleteById(todo.getId());
+    verify(todoRepositoryMock).delete(todo);
   }
   
   @Test
@@ -159,7 +159,7 @@ class TodoServiceTest {
     Assertions.assertThrows(TodoServiceException.class, () -> {
       service.deleteTodos(request);
     });
-    verify(todoRepositoryMock,times(0)).deleteById(todo1.getId());
+    verify(todoRepositoryMock,times(0)).delete(todo1);
   }
   
   private void setUpTodo() {

@@ -86,9 +86,8 @@ public class TodoService {
 				log.info(String.format("userTodo : [%s] doesnot exist for user", userTodo));
 				log.error(String.format("Todo : [%s] doesnot exist for user", todo));
 				log.error(String.format("resultTodo : [%s] doesnot exist for user", resultTodo));
-				if (todo.getTitle().equalsIgnoreCase(userTodo.getTitle())) {
+				if (resultTodo.getTitle().equalsIgnoreCase(userTodo.getTitle())) {
 					if (isUpdate) {
-						resultTodo = todoRepository.getOne(userTodo.getId());
 						resultTodo.setStatus(Status.UPDATED.getStatus());
 						resultTodo.setUpdatedDate(LocalDate.now());
 						todoRepository.save(resultTodo);
