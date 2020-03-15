@@ -44,8 +44,8 @@ export class TasksComponent implements OnInit {
   }
 
   //delete a todo
-  deleteItem(_id: Todo){
-    this.todoService.deleteTodo(this.userName,_id)
+  deleteItem(id: string){
+    this.todoService.deleteTodo(this.userName,id)
       .subscribe(
         (res: any) => location.reload(),
         (error: any) => console.log(error)
@@ -53,10 +53,10 @@ export class TasksComponent implements OnInit {
   }
 
   //open the edit dialog
-  openEditDialog(_id): void {
-    this.todoService.getTodos(_id)
+  openEditDialog(): void {
+    this.todoService.getTodos(this.userName)
         .subscribe( 
-          (resp: Todo) => {
+          (resp: Todo[]) => {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.width = '500px';
             dialogConfig.data = resp;

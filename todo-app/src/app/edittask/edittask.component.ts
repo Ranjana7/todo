@@ -26,7 +26,7 @@ export class EdittaskComponent implements OnInit {
 
 
   onUpdate(formData: any){
-    let editedTodo: any = { _id: formData._id, title: formData.title};
+    let editedTodo: any = {title: formData.title};
     this.myData.updateTodo(this.userName,editedTodo)
       .subscribe(
         (data: Todo) => location.reload(),

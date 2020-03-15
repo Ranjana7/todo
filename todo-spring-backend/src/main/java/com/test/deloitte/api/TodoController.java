@@ -59,9 +59,14 @@ public class TodoController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.updateTodos(todoRequest));
 	}
 
-	@ApiOperation(value = "Deletes a Todo")
+	@ApiOperation(value = "Deletes a list of Todos")
 	@DeleteMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Todo>> deleteTodo(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodos(todoRequest));
+	}
+	@ApiOperation(value = "Delete a Todo")
+	@DeleteMapping(path = "/todos/{userName}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Todo> deleteTodo(@NotNull @Valid @PathVariable String userName,@NotNull @Valid @PathVariable String id) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodos(userName, Long.valueOf(id)));
 	}
 }

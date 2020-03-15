@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,15 @@ public class TodoService {
 			result.add(resultTodo);
 		}
 		return result;
+	}
+
+	public Todo deleteTodos(@NotNull @Valid String userName, @NotNull @Valid Long id) {
+		TodoRequest req = new TodoRequest();
+		List<Todo> todos = new ArrayList<>();
+		todos.add(todoRepository.getOne(id));
+		req.setUserName(userName);
+		req.setTodos(todos);
+		return updateOrDeleteTodo(req, false).get(0);
 	}
 
 }

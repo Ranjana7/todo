@@ -7,7 +7,6 @@ import { TodoRequest } from './todo-request';
 @Injectable({providedIn: 'root' })
 export class TodoService {
   private baseUrl = 'http://localhost:8080/v1/todos/';
-  private request: TodoRequest = new TodoRequest();
   constructor(private http: HttpClient) { }
 
   getTodos(userName: String):  Observable<any> {
@@ -15,20 +14,33 @@ export class TodoService {
   }
 
   addTodo(userName:string,todo: Todo): Observable<any> {
-    return this.submitRequest(userName,todo);
+    return this.http.post(this.baseUrl, this.submitRequest(userName,todo), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 
   updateTodo(userName:string,todo: Todo): Observable<any> {
-    return this.submitRequest(userName,todo);
+    return this.http.put(this.baseUrl, this.submitRequest(userName,todo), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 
-  deleteTodo(userName:string,todo: Todo): Observable<any> {
-    return this.submitRequest(userName,todo);
+  deleteTodo(userName:string,id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}${userName}/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 
-  private submitRequest(userName:string,todo: Todo): Observable<any>{
-    this.request.todos.push(todo);
-    this.request.userName = userName;
-    return this.http.post(this.baseUrl, this.request);
+  private submitRequest(userName:string,todo: Todo): TodoRequest{
+    let request : TodoRequest = new TodoRequest();
+    request.todos.push(todo);
+    request.userName = userName;
+    return request;
   }
 }
