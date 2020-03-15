@@ -9,12 +9,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.test.deloitte.api.model.MultiTodoRequest;
+import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.dao.TodoRepository;
 import com.test.deloitte.dao.UserRepository;
 import com.test.deloitte.enums.Status;
 import com.test.deloitte.handler.exception.CustomResponseEntityExceptionHandler;
+import com.test.deloitte.handler.exception.TodoServiceException;
 import com.test.deloitte.model.Todo;
 import com.test.deloitte.model.User;
 
@@ -42,7 +43,7 @@ public class TodoService {
 				() -> new TodoServiceException(String.format("Failed to retrieve the todo for title: [%s]", title)));
 	}
 
-	public List<Todo> createTodos(@Valid MultiTodoRequest todoRequest) {
+	public List<Todo> createTodos(@Valid TodoRequest todoRequest) {
 		log.info(String.format("Creating new Todos : [%s]", todoRequest));
 		User user = getPersistedUser(todoRequest.getUserName());
 		for (Todo todo : todoRequest.getTodos()) {
@@ -51,12 +52,12 @@ public class TodoService {
 		return saveTodos(todoRequest.getTodos());
 	}
 
-	public List<Todo> updateTodos(@Valid MultiTodoRequest todoRequest) {
+	public List<Todo> updateTodos(@Valid TodoRequest todoRequest) {
 		log.info(String.format("Updating existing Todos : [%s]", todoRequest));
 		return updateOrDeleteTodo(todoRequest, true);
 	}
 
-	public List<Todo> deleteTodos(@Valid MultiTodoRequest todoRequest) {
+	public List<Todo> deleteTodos(@Valid TodoRequest todoRequest) {
 		log.info(String.format("Delete Todos if exist for user: [%s]", todoRequest));
 		return updateOrDeleteTodo(todoRequest, false);
 	}
@@ -76,7 +77,7 @@ public class TodoService {
 		todo.setTitle(todo.getTitle().toUpperCase());
 		return todo;
 	}
-	private List<Todo> updateOrDeleteTodo(MultiTodoRequest todoRequest, boolean isUpdate) {
+	private List<Todo> updateOrDeleteTodo(TodoRequest todoRequest, boolean isUpdate) {
 		List<Todo> result = new ArrayList<Todo>();
 		List<Todo> todosForUser = getAllTodosForUser(todoRequest.getUserName());
 		for (Todo todo : todoRequest.getTodos()) {

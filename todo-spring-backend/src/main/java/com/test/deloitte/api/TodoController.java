@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.deloitte.api.model.MultiTodoRequest;
+import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.model.Todo;
 import com.test.deloitte.model.User;
@@ -49,19 +49,19 @@ public class TodoController {
 
 	@ApiOperation(value = "Creates a Todo")
 	@PostMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Todo>> createTodosForUser(@Valid @RequestBody MultiTodoRequest todoRequest) {
+	public ResponseEntity<List<Todo>> createTodosForUser(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodos(todoRequest));
 	}
 
 	@ApiOperation(value = "Update existing Todo")
 	@PutMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Todo>> updateTodosForUser(@Valid @RequestBody MultiTodoRequest todoRequest) {
+	public ResponseEntity<List<Todo>> updateTodosForUser(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.updateTodos(todoRequest));
 	}
 
 	@ApiOperation(value = "Deletes a Todo")
 	@DeleteMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Todo>> deleteTodo(@Valid @RequestBody MultiTodoRequest todoRequest) {
+	public ResponseEntity<List<Todo>> deleteTodo(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodos(todoRequest));
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.test.deloitte.api.model.ErrorResponse;
 import com.test.deloitte.enums.ErrorCodes;
-import com.test.deloitte.service.TodoServiceException;
 
 import lombok.extern.apachecommons.CommonsLog;
 

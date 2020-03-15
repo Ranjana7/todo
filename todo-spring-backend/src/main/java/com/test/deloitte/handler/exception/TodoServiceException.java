@@ -1,4 +1,4 @@
-package com.test.deloitte.service;
+package com.test.deloitte.handler.exception;
 
 public class TodoServiceException extends RuntimeException {
 
