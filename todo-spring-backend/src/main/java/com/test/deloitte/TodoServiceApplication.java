@@ -37,6 +37,9 @@ public class TodoServiceApplication {
       LocalDate date =  LocalDate.now();
       User user = userRepo.save(new User("TestUser1"));
       User user1 = userRepo.save(new User("TestUser2"));
+      User user3 = userRepo.save(new User("David"));
+      User user4 = userRepo.save(new User("Ranjana"));
+      User user5 = userRepo.save(new User("Amit"));
 
       // create and save new todos
       todoRepo.save(new Todo("DOCUMENT THE TODO SERVICE", status, date, user));
