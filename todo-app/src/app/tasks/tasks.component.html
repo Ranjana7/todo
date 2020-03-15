@@ -4,7 +4,7 @@
       <h3 mat-subheader>0 todo found on {{userName}}'s list</h3>
   </span>
   <span *ngIf="(todos.length > 0)">
-      <h3 mat-subheader>{{userName}} have ({{todos.length}}) todo<span *ngIf="(todos.length > 0) ">s</span> in their list.</h3>
+      <h3 mat-subheader>{{userName}} have ({{todos.length}}) todos in their list.<span *ngIf="(todos.length > 0)"></span></h3>
       <mat-list-item *ngFor="let todo of todos">
         <mat-icon mat-list-icon>watch_later</mat-icon>
         <h4 mat-line>{{todo.title}}</h4>

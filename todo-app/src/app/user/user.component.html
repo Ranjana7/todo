@@ -1,12 +1,12 @@
-<h2 mat-dialog-title>Please enter Username</h2>
+<h2 mat-dialog-title>Please enter Username to login</h2>
 
 <mat-dialog-content>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="userName" [(ngModel)]="data.userName" #data="ngModel" >      
+      <input matInput [(ngModel)]="formDialog" placeholder="Enter Username Here and Click Login">
     </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSave(data)">Save</button>
+  <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
 </mat-dialog-actions>

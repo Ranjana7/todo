@@ -41,7 +41,7 @@ import { UserComponent } from './user/user.component';
     MatMenuModule,
     HttpClientModule
   ],
-  entryComponents: [AddtaskComponent, EdittaskComponent],
+  entryComponents: [AddtaskComponent, EdittaskComponent, UserComponent],
   providers: [TodoService],
   bootstrap: [AppComponent]
 })

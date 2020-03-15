@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-user',
@@ -6,11 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
-  userName:string;
-  constructor() { }
+  formDialog:string;
+  constructor(public dialogRef: MatDialogRef<UserComponent>) { }
 
   ngOnInit() {
   }
 
+  onCancel(): void {
+    this.dialogRef.close({event:'close',data:"TestUser1"});
+  }
+
+  onLogin(){
+    this.dialogRef.close({event:'login',data:this.formDialog});
+  }
 }
