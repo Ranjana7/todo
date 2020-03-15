@@ -14,7 +14,7 @@ export class UserComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.dialogRef.close({event:'close',data:"TestUser1"});
+    this.dialogRef.close({event:'close',data:"Guest"});
   }
 
   onLogin(){

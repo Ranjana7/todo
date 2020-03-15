@@ -16,7 +16,7 @@ import { ComponentType, T } from '@angular/core/src/render3';
 export class AppComponent {
 
 
-  user: string = "Guest";
+  user: string;
   constructor(public dialog: MatDialog) {}
 
   title = 'Todo-App';
