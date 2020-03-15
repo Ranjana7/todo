@@ -13,5 +13,5 @@ export class ToolbarComponent implements OnInit {
     
   }
 
-  title = 'angular 7 todo-app';
+  title = 'My Todo App';
 }
