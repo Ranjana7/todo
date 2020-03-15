@@ -32,7 +32,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/todos")
 @RequiredArgsConstructor(onConstructor = @__({ @Autowired }))
 @CrossOrigin("*")
 @Api(tags = "TodoService")
@@ -42,31 +42,38 @@ public class TodoController {
 	private final @NonNull TodoService todoService;
 
 	@ApiOperation(value = "Get a list of all Todos")
-	@GetMapping(path = "/todos/{userName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{userName}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Todo>> listAllTodosForUser(@NotNull @Valid @PathVariable String userName) {
 		return ResponseEntity.ok().body(todoService.getAllTodosForUser(userName));
 	}
+	
+	@ApiOperation(value = "Get a Todo by id")
+	@GetMapping(path = "/todo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Todo> listAllTodosForUser(@NotNull @Valid @PathVariable Long id) {
+		return ResponseEntity.ok().body(todoService.getTodoById(id));
+	}
+
 
 	@ApiOperation(value = "Creates a Todo")
-	@PostMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Todo>> createTodosForUser(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodos(todoRequest));
 	}
 
 	@ApiOperation(value = "Update existing Todo")
-	@PutMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Todo>> updateTodosForUser(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.updateTodos(todoRequest));
 	}
 
 	@ApiOperation(value = "Deletes a list of Todos")
-	@DeleteMapping(path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Todo>> deleteTodo(@Valid @RequestBody TodoRequest todoRequest) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodos(todoRequest));
 	}
 	@ApiOperation(value = "Delete a Todo")
-	@DeleteMapping(path = "/todos/{userName}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Todo> deleteTodo(@NotNull @Valid @PathVariable String userName,@NotNull @Valid @PathVariable String id) {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodos(userName, Long.valueOf(id)));
+	@DeleteMapping(path = "/{userName}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Todo> deleteTodo(@NotNull @Valid @PathVariable String userName,@NotNull @Valid @PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.deleteTodo(userName, id));
 	}
 }

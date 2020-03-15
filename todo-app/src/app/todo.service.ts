@@ -6,13 +6,16 @@ import { TodoRequest } from './todo-request';
 
 @Injectable({providedIn: 'root' })
 export class TodoService {
+
   private baseUrl = 'http://localhost:8080/v1/todos/';
   constructor(private http: HttpClient) { }
 
-  getTodos(userName: String):  Observable<any> {
+  getTodos(userName: string):  Observable<any> {
     return this.http.get(this.baseUrl + userName);
   }
-
+  getTodoById(id: number) {
+    return this.http.get(`${this.baseUrl}todo/${id}`);
+  }
   addTodo(userName:string,todo: Todo): Observable<any> {
     return this.http.post(this.baseUrl, this.submitRequest(userName,todo), {
       headers: {

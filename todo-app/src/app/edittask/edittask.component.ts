@@ -9,8 +9,6 @@ import { Todo } from './../todo.interface';
   styleUrls: ['./edittask.component.css']
 })
 export class EdittaskComponent implements OnInit {
-  @Input()
-  userName: string;
   constructor(
     public dialogRef: MatDialogRef<EdittaskComponent>,
     @Inject(MAT_DIALOG_DATA) public passingData: Todo,
@@ -26,8 +24,8 @@ export class EdittaskComponent implements OnInit {
 
 
   onUpdate(formData: any){
-    let editedTodo: any = {title: formData.title};
-    this.myData.updateTodo(this.userName,editedTodo)
+    let editedTodo: any = {complete: formData.completed, title: formData.response.title};
+    this.myData.updateTodo(formData.userName,editedTodo)
       .subscribe(
         (data: Todo) => location.reload(),
         (error) => console.log(error)

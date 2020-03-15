@@ -26,12 +26,6 @@ export class TasksComponent implements OnInit {
   ) {}
 
   ngOnInit(): void{
-    this.todoService.getTodos(this.userName)
-    .subscribe(
-      (data: Todo[]) =>  this.todos = data,
-      (error: any)   => console.log(error),
-      ()             => console.log('all data gets')
-    );
   }
 
   ngOnChanges(): void{
@@ -47,19 +41,19 @@ export class TasksComponent implements OnInit {
   deleteItem(id: string){
     this.todoService.deleteTodo(this.userName,id)
       .subscribe(
-        (res: any) => location.reload(),
+        (data: Todo[]) => location.reload(),
         (error: any) => console.log(error)
       )
   }
 
   //open the edit dialog
-  openEditDialog(): void {
-    this.todoService.getTodos(this.userName)
+  openEditDialog(id): void {
+    this.todoService.getTodoById(id)
         .subscribe( 
-          (resp: Todo[]) => {
+          (resp: Todo) => {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.width = '500px';
-            dialogConfig.data = resp;
+            dialogConfig.data = {response:resp,userName:this.userName};
             const dialogRef = this.dialog.open(EdittaskComponent, dialogConfig);
 
             dialogRef.afterClosed().subscribe(result => {

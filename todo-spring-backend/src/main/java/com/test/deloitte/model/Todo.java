@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "TODO")
@@ -66,7 +65,7 @@ public class Todo implements Serializable {
   @Column(name = "LAST_UPDATED")
   @Getter
   @Setter
-  private LocalDate updatedDate;
+  private LocalDate lastUpdatedOn;
 
   @Column(name = "CREATED_ON")
   @Getter
@@ -86,7 +85,7 @@ public class Todo implements Serializable {
 
   @Override
   public String toString() {
-    return "Todo [id=" + id + ", title=" + title + ", status=" + status + ", updatedDate=" + updatedDate + ", createdOn=" + createdOn
+    return "Todo [id=" + id + ", title=" + title + ", status=" + status + ", updatedDate=" + lastUpdatedOn + ", createdOn=" + createdOn
         + ", isCompleted=" + isCompleted + "]";
   }
 

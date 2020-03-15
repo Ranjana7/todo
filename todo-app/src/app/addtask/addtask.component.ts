@@ -41,7 +41,7 @@ export class AddtaskComponent implements OnInit {
       let newTodo: any = { title: formData.title};
       this.todoService.addTodo(this.userName,newTodo)
         .subscribe(
-          (data: Todo) => location.reload(),
+          (data: Todo[]) => location.reload(),
           (error) => console.log(error)
         );
       this.dialogRef.close();

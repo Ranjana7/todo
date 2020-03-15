@@ -40,129 +40,135 @@ import com.test.deloitte.model.User;
 @Tag("unit")
 class TodoServiceTest {
 
-  private TodoService service;
+	private TodoService service;
 
-  @Mock
-  private TodoRepository todoRepositoryMock;
-  @Mock
-  private UserRepository userRepositoryMock;
+	@Mock
+	private TodoRepository todoRepositoryMock;
+	@Mock
+	private UserRepository userRepositoryMock;
 
-  private TodoRequest request;
-  private List<Todo> todos;
-  private Todo todo;
-  private Todo todo1;
-  private User user;
+	private TodoRequest request;
+	private List<Todo> todos;
+	private Todo todo;
+	private Todo todo1;
+	private User user;
 
-  @BeforeEach
-  void setUp() throws Exception {
-    MockitoAnnotations.initMocks(this);
-    service = new TodoService(todoRepositoryMock, userRepositoryMock);
-    setUpData();
-  }
+	@BeforeEach
+	void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		service = new TodoService(todoRepositoryMock, userRepositoryMock);
+		setUpData();
+	}
 
-  private void setUpData() {
-    user = new User(TestData.USERNAME);
-    user.setTodos(todos);
-    todo = new Todo(TestData.ANOTHER_TITLE, Status.CREATED.getStatus(), TestData.CURRENT_DATE);
-    todo.setUser(user);
-    todo.setId(1l);
-    todo1 = new Todo("Test", Status.CREATED.getStatus(), TestData.CURRENT_DATE);
-    todos = new ArrayList<>();
-    todos.add(todo);
+	private void setUpData() {
+		user = new User(TestData.USERNAME);
+		user.setTodos(todos);
+		todo = new Todo(TestData.ANOTHER_TITLE, Status.CREATED.getStatus(), TestData.CURRENT_DATE);
+		todo.setUser(user);
+		todo.setId(1l);
+		todo1 = new Todo("Test", Status.CREATED.getStatus(), TestData.CURRENT_DATE);
+		todos = new ArrayList<>();
+		todos.add(todo);
 
-    request = new TodoRequest();
-    request.setTodos(todos);
-    request.setUserName(TestData.USERNAME);
+		request = new TodoRequest();
+		request.setTodos(todos);
+		request.setUserName(TestData.USERNAME);
 
-    when(userRepositoryMock.findUserByName(anyString())).thenReturn(user);
-  }
+		when(userRepositoryMock.findUserByName(anyString())).thenReturn(user);
+	}
 
-  @Test
-  void getAllTodosForUser_todosFound_returnsListOfTodos() {
-    setUpTodo();
+	@Test
+	void getAllTodosForUser_todosFound_returnsListOfTodos() {
+		setUpTodo();
 
-    assertNotNull(service.getAllTodosForUser(user.getName()));
-    verify(todoRepositoryMock).findByUser(user);
-  }
+		assertNotNull(service.getAllTodosForUser(user.getName()));
+		verify(todoRepositoryMock).findByUser(user);
+	}
 
-  @Test
-  void createTodo_validTodo_savedToDB() {
-    when(todoRepositoryMock.saveAll(any())).thenReturn(todos);
+	@Test
+	void createTodo_validTodo_savedToDB() {
+		when(todoRepositoryMock.saveAll(any())).thenReturn(todos);
 
-    assertNotNull(service.createTodos(request));
-    verify(todoRepositoryMock).saveAll(todos);
+		assertNotNull(service.createTodos(request));
+		verify(todoRepositoryMock).saveAll(todos);
 
-  }
+	}
 
-  @Test
-  void createTodos_inValidTodo_dbThrowsException() {
-    when(todoRepositoryMock.saveAll(any())).thenThrow(new ConstraintViolationException(null, null, null));
+	@Test
+	void createTodos_inValidTodo_dbThrowsException() {
+		when(todoRepositoryMock.saveAll(any())).thenThrow(new ConstraintViolationException(null, null, null));
 
-    Assertions.assertThrows(ConstraintViolationException.class, () -> {
-      service.createTodos(request);
-    });
-    verify(todoRepositoryMock).saveAll(todos);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			service.createTodos(request);
+		});
+		verify(todoRepositoryMock).saveAll(todos);
 
-  }
+	}
 
-  @Test
-  void createTodos_InValidTodoWithNullTitle_ThrowsException() {
-    todo.setTitle(null);
+	@Test
+	void createTodos_InValidTodoWithNullTitle_ThrowsException() {
+		todo.setTitle(null);
 
-    Assertions.assertThrows(NullPointerException.class, () -> {
-      service.createTodos(request);
-    });
-    verify(todoRepositoryMock, times(0)).saveAll(todos);
-  }
-  
-  @Test
-  void updateTodos_todoFoundForUser_updated() {
-    setUpTodo();
-	when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			service.createTodos(request);
+		});
+		verify(todoRepositoryMock, times(0)).saveAll(todos);
+	}
 
-    List<Todo> updateTodos = service.updateTodos(request);
-    
-    verify(todoRepositoryMock).save(todo);
-    for(Todo todo : updateTodos) {
-      assertEquals(todo.getStatus(), Status.UPDATED.getStatus());
-    }
-  }
-  
-  @Test
-  void updateTodos_todoNotFoundForUser_created() {
-    setUpTodo();
-    when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo1));
-    List<Todo> updateTodos = service.updateTodos(request);
-    
-    for(Todo todo : updateTodos) {
-      assertEquals(todo.getStatus(), Status.CREATED.getStatus());
-    }
-  }
+	@Test
+	void updateTodos_todoFoundForUser_updated() {
+		setUpTodo();
+		when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
 
-  @Test
-  void deleteTodos_todoFoundForUser_deleted() {
-    setUpTodo();
-	when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
-    doAnswer((todo) -> {
-      return null;
-    }).when(todoRepositoryMock).delete(any());
-    
-    assertNotNull(service.deleteTodos(request));
-    verify(todoRepositoryMock).delete(todo);
-  }
-  
-  @Test
-  void deleteTodos_todoNotFoundForUser_ThrowException() {
-    setUpTodo();
-    when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo1));
-    
-    Assertions.assertThrows(TodoServiceException.class, () -> {
-      service.deleteTodos(request);
-    });
-    verify(todoRepositoryMock,times(0)).delete(todo1);
-  }
-  
-  private void setUpTodo() {
-    when(todoRepositoryMock.findByUser(any())).thenReturn(todos);
-  }
+		List<Todo> updateTodos = service.updateTodos(request);
+
+		verify(todoRepositoryMock).save(todo);
+		for (Todo todo : updateTodos) {
+			assertEquals(todo.getStatus(), Status.UPDATED.getStatus());
+		}
+	}
+
+	@Test
+	void updateTodos_todoNotFoundForUser_created() {
+		setUpTodoNotFound();
+		when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo1));
+		List<Todo> updateTodos = service.updateTodos(request);
+
+		for (Todo todo : updateTodos) {
+			assertEquals(todo.getStatus(), Status.CREATED.getStatus());
+		}
+	}
+
+	@Test
+	void deleteTodos_todoFoundForUser_deleted() {
+		setUpTodo();
+		when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo));
+		doAnswer((todo) -> {
+			return null;
+		}).when(todoRepositoryMock).delete(any());
+
+		assertNotNull(service.deleteTodos(request));
+		verify(todoRepositoryMock).delete(todo);
+	}
+
+	@Test
+	void deleteTodos_todoNotFoundForUser_ThrowException() {
+		setUpTodoNotFound();
+		when(todoRepositoryMock.findByTitle(anyString())).thenReturn(Optional.of(todo1));
+
+		Assertions.assertThrows(TodoServiceException.class, () -> {
+			service.deleteTodos(request);
+		});
+		verify(todoRepositoryMock, times(0)).delete(todo1);
+	}
+
+	private void setUpTodo() {
+		when(todoRepositoryMock.findByUser(any())).thenReturn(todos);
+	}
+
+	private void setUpTodoNotFound() {
+		List<Todo> todos1 = new ArrayList<Todo>();
+		todos.add(todo1);
+		when(todoRepositoryMock.findByUser(any())).thenReturn(todos1);
+	}
 }

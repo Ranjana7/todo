@@ -1,8 +1,8 @@
-<h2 mat-dialog-title>Edit todo</h2>
+<h2 mat-dialog-title>Update Todo</h2>
 
 <mat-dialog-content>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Todo Title" [(ngModel)]="passingData.title" #data="ngModel" >      
+      <input matInput placeholder="Type true if task is completed else type false" [(ngModel)]="passingData.completed" #data="ngModel" >      
     </mat-form-field>
 </mat-dialog-content>
 

@@ -110,16 +110,14 @@ class ToDoControllerIT {
   }
   
   @Test
-  void updateTodosForUser_todoNotFoundForUser_created() throws Exception {
+  void updateTodosForUser_todoNotFoundForUser_loggedError() throws Exception {
     Todo originalTodo = service.retriveTodoByTitle(TestData.TITLE);
     todoRequest.setUserName(TestData.ANOTHER_USERNAME);
     user.setName(TestData.ANOTHER_USERNAME);
     int orifinalNumberOfTodos = service.getAllTodosForUser(TestData.USERNAME).size();
-    MvcResult response = mockMvc
+    mockMvc
         .perform(put("/v1/todos").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(todoRequest)))
         .andExpect(status().isAccepted()).andReturn();
-    assertNotEquals(originalTodo, objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<List<Todo>>() {
-    }).get(0));
     assertEquals(orifinalNumberOfTodos, service.getAllTodosForUser(TestData.USERNAME).size());
   }
 

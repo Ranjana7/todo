@@ -63,6 +63,19 @@ public class TodoService {
 		return updateOrDeleteTodo(todoRequest, false);
 	}
 
+	public Todo deleteTodo(@NotNull @Valid String userName, @NotNull @Valid Long id) {
+		TodoRequest req = new TodoRequest();
+		List<Todo> todos = new ArrayList<>();
+		todos.add(todoRepository.getOne(id));
+		req.setUserName(userName);
+		req.setTodos(todos);
+		return updateOrDeleteTodo(req, false).get(0);
+	}
+
+	public Todo getTodoById(@NotNull @Valid Long id) {
+		return todoRepository.getOne(id);
+	}
+
 	private User getPersistedUser(String userName) {
 		return userRepository.findUserByName(userName);
 	}
@@ -78,45 +91,35 @@ public class TodoService {
 		todo.setTitle(todo.getTitle().toUpperCase());
 		return todo;
 	}
+
 	private List<Todo> updateOrDeleteTodo(TodoRequest todoRequest, boolean isUpdate) {
 		List<Todo> result = new ArrayList<Todo>();
 		List<Todo> todosForUser = getAllTodosForUser(todoRequest.getUserName());
-		for (Todo todo : todoRequest.getTodos()) {
-			Todo resultTodo = retriveTodoByTitle(todo.getTitle());
-			for (Todo userTodo : todosForUser) {
-				log.info(String.format("userTodo : [%s] doesnot exist for user", userTodo));
-				log.error(String.format("Todo : [%s] doesnot exist for user", todo));
-				log.error(String.format("resultTodo : [%s] doesnot exist for user", resultTodo));
-				if (resultTodo.getTitle().equalsIgnoreCase(userTodo.getTitle())) {
-					if (isUpdate) {
-						resultTodo.setStatus(Status.UPDATED.getStatus());
-						resultTodo.setUpdatedDate(LocalDate.now());
-						todoRepository.save(resultTodo);
-						result.add(resultTodo);
-					} else {
-						todoRepository.delete(resultTodo);
-						result.add(resultTodo);
-					}
-					break;
+		List<Todo> requestTodos = todoRequest.getTodos();
+		for (int i = 0; i < requestTodos.size(); i++) {
+			Todo todo = requestTodos.get(i);
+			Todo resultTodo = retriveTodoByTitle(todo.getTitle().toUpperCase());
+			log.info(String.format("Todo : [%s] ", todo));
+			log.info(String.format("userTodo : [%s] ", resultTodo));
+			if (todosForUser.contains(resultTodo)) {
+				if (isUpdate) {
+					resultTodo.setStatus(Status.UPDATED.getStatus());
+					resultTodo.setLastUpdatedOn(LocalDate.now());
+					resultTodo.setCompleted(todo.isCompleted());
+					todoRepository.save(resultTodo);
 				} else {
-					log.error(String.format("Todo : [%s] doesnot exist for user", todo));
-					if (!isUpdate) {
-						throw new TodoServiceException(String.format("Todo doesnot exist for User: [%s]", resultTodo));
-					}
+					todoRepository.delete(resultTodo);
+				}
+				result.add(resultTodo);
+			} else {
+				log.error(String.format("Todo : [%s] doesnot exist for user", todo));
+				if (!isUpdate) {
+					throw new TodoServiceException(
+							String.format("Todo : [%s] doesnot exist for User: [%s]", todo, todoRequest.getUserName()));
 				}
 			}
-			result.add(resultTodo);
 		}
 		return result;
-	}
-
-	public Todo deleteTodos(@NotNull @Valid String userName, @NotNull @Valid Long id) {
-		TodoRequest req = new TodoRequest();
-		List<Todo> todos = new ArrayList<>();
-		todos.add(todoRepository.getOne(id));
-		req.setUserName(userName);
-		req.setTodos(todos);
-		return updateOrDeleteTodo(req, false).get(0);
 	}
 
 }
