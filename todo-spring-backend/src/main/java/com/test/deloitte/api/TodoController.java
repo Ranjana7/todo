@@ -24,6 +24,7 @@ import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.api.model.TodoRequest;
 import com.test.deloitte.model.Todo;
 import com.test.deloitte.model.User;
+import com.test.deloitte.service.TodoService;
 import com.test.deloitte.service.TodoServiceImpl;
 
 import io.swagger.annotations.Api;
@@ -39,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class TodoController {
 
 	
-	private final @NonNull TodoServiceImpl todoService;
+	private final @NonNull TodoService todoService;
 
 	@ApiOperation(value = "Get a list of all Todos")
 	@GetMapping(path = "/{userName}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -33,6 +33,7 @@ import com.test.deloitte.enums.Status;
 import com.test.deloitte.model.Todo;
 import com.test.deloitte.model.User;
 import com.test.deloitte.service.TestData;
+import com.test.deloitte.service.TodoService;
 import com.test.deloitte.service.TodoServiceImpl;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TodoServiceApplication.class)
@@ -46,7 +47,7 @@ class ToDoControllerIT {
   @Autowired
   private ObjectMapper objectMapper;
   @Autowired
-  private TodoServiceImpl service;
+  private TodoService service;
   
   private TodoRequest todoRequest;
   private Todo todo;
