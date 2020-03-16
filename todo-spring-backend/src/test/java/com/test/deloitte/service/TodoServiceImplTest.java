@@ -38,7 +38,7 @@ import com.test.deloitte.model.User;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("unit")
-class TodoServiceTest {
+class TodoServiceImplTest {
 
 	private TodoService service;
 
@@ -56,7 +56,7 @@ class TodoServiceTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		service = new TodoService(todoRepositoryMock, userRepositoryMock);
+		service = new TodoServiceImpl(todoRepositoryMock, userRepositoryMock);
 		setUpData();
 	}
 
