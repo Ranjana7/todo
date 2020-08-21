@@ -10,14 +10,14 @@ http://localhost:8080/swagger-ui.html#
 
 Please note, I am using the same in-memory db for testing and the front-end app. However, this can be easily updated by adding a application.properties file in src/test/resources.
 Username in DB to be used for Login to Todo App:
-TestUser1
-TestUser2
-David
-Amit
-Ranjana
+TestUser1, 
+TestUser2, 
+David, 
+Amit, 
+Ranjana, 
 Guest
-What’s Next
 
+## What’s Next
 Fix Front end bug 
 Create Javadoc
 Finish Unit and Integrations tests for Todo-Service – both backend and front end
