@@ -9,7 +9,7 @@ Todo-Service app is a multi-user Spring Boot app with a possibility to have a fu
 http://localhost:8080/swagger-ui.html#
 
 Please note, I am using the same in-memory db for testing and the front-end app. However, this can be easily updated by adding a application.properties file in src/test/resources.
-Username in DB to be used for Login to Todo App:
+### Username in DB to be used for Login to Todo App:
 TestUser1, 
 TestUser2, 
 David, 
